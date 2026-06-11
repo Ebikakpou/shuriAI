@@ -1,6 +1,7 @@
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import { X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
     const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
@@ -28,7 +29,7 @@ export default function Navbar() {
                          duration-300">Pricing</a>
                         <a href="#testimonials" className="text-sm sm:text-base text-gray-300 hover:text-orange-500 transition-colors 
                         duration-300">Testimonials</a>
-                        <a href="#get-started" className="text-sm sm:text-base text-gray-300 hover:text-orange-500 transition-colors 
+                        <a href="/auth" className="text-sm sm:text-base text-gray-300 hover:text-orange-500 transition-colors 
                         duration-300">Get Started</a>
                     </div>
                     <button className="md:hidden p-2 text-gray-300 hover:text-orange-500 
@@ -56,7 +57,8 @@ export default function Navbar() {
                         <a href="#testimonials" className="block px-4 py-2 text-sm text-gray-300 hover:text-orange-500 transition-colors 
                         duration-300" onClick={() => setMobileMenuIsOpen(false)}>Testimonials</a>
                         <a href="#get-started" className="block px-4 py-2 text-sm text-gray-300 hover:text-orange-500 transition-colors
-                         duration-300" onClick={() => setMobileMenuIsOpen(false)}>Get Started</a>
+                         duration-300 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg text-sm font-medium 
+                         hover:opacity-90 transition-all" onClick={() => setMobileMenuIsOpen(false)}>Get Started</a>
                     </div>
                 </div>)}
     </nav>

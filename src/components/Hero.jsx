@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { ArrowRight, ChevronDown, Sparkles } from "lucide-react"
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { codeExamples, floatingCards } from "../data/CodeExamples";
+import { codeExamples, floatingCards } from "../data/codeExamples";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 //import { motion } from "framer-motion"
@@ -55,11 +55,11 @@ export default function Hero() {
                 
                 <div className=" flex flex-col sm:flex-row items-center justify-center lg:justify-smart gap-3 sm:gap-4 mb-8 sm:mb-12 
                 animate-in slide-in-from-bottom duration-700 delay-300">
-                  <button className="group w-full h-18 sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-b from-blue-600  to-blue-400 
+                  <a href="/auth"><button className="group w-full h-18 sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-b from-blue-600  to-blue-400 
                   rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-102 flex items-center justify-center space-x-2">
                     <span> Get Started</span>
                     <ArrowRight className="w-4 h-4  sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300"/>
-                  </button>
+                  </button></a>
                 </div>
             </div>
 
