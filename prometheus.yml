@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s # Scrape targets every 15 seconds
+
+scrape_configs:
+  - job_name: 'shuriai-production-metrics'
+    static_configs:
+      - targets: ['localhost:80'] # Tracks traffic hitting your primary app port
