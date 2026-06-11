@@ -30,3 +30,10 @@ app.listen(PORT, () => {
   console.log(`  ShuriAI Server listening on Port: ${PORT}  `);
   console.log(`============================================\n`);
 });
+
+// ... existing server code setup parameters
+app.use("/api/auth", require("./routes/auth"));
+
+// 🔥 NEW PIPELINE ROUTE: Mounts your history updater maps directly to port routers
+app.use("/api/dictionary", require("./routes/dictionary"));
+// ... balance of listener server setup blocks remains unchanged
