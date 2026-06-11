@@ -1,18 +1,53 @@
-# React + Vite
+# 🌌 ShuriAI Studio — Hybrid Cloud Architecture
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ShuriAI Studio is a high-performance, AI-integrated dictionary web platform built with React and Tailwind CSS. This ecosystem leverages a modern **hybrid DevOps pipeline**: a blistering-fast serverless frontend hosted on **Vercel** combined with a containerized **Docker** build engine automated via **GitHub Actions**—offering a clear path for self-hosting on **AWS EC2** with dedicated **Prometheus** and **Grafana** observability.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🏗️ Architecture Overview
 
-## React Compiler
+The platform splits user-facing operations from background metrics collection to maximize speed and isolate admin dashboards from public view.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+┌───────────────────┐
+                           │   GitHub Push     │
+                           └─────────┬─────────┘
+                                     │
+                ┌────────────────────┴────────────────────┐
+                ▼                                         ▼
+     ┌─────────────────────┐                   ┌─────────────────────┐
+     │  Vercel Deployment  │                   │ GitHub Actions CI   │
+     │ (Production Live)   │                   └──────────┬──────────┘
+     └──────────┬──────────┘                              │
+                │ (Log Drains)                            ▼
+                ▼                              ┌─────────────────────┐
+     ┌─────────────────────┐                   │ Docker Hub Registry │
+     │ Grafana Cloud Stack │                   │  (shuri-app:latest)  │
+     │ (Vercel Monitoring) │                   └──────────┬──────────┘
+     └─────────────────────┘                              │ (Optional)
+                                                          ▼
+                                               ┌─────────────────────┐
+                                               │   AWS EC2 Cluster   │
+                                               │  (Self-Hosted App)  │
+                                               └─────────────────────┘
 
-Note: This will impact Vite dev & build performances.
+* **Frontend Hosting:** Vercel (Global Edge Network, Serverless functions).
+* **CI/CD Automation:** GitHub Actions (Multi-stage automated testing and image building).
+* **Containerization:** Docker Engine & Docker Compose orchestration.
+* **Observability:** Prometheus (Time-series log scraper) + Grafana (Telemetry dashboard).
+* **Cloud Infrastructure:** AWS EC2 (`t2.micro` Free-Tier compatible).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Quick Start (Local Development)
+
+### Prerequisites
+* Node.js (v18 or higher)
+* Docker Desktop (Optional, for container environment checking)
+
+### Local Configuration
+1. **Clone the repository workspace:**
+   ```bash
+   git clone [https://github.com/yourusername/shuriai-studio.git](https://github.com/yourusername/shuriai-studio.git)
+   cd shuriai-studio
+   npm install
+   npm run dev
