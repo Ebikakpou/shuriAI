@@ -39,17 +39,17 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between">
       
       <Routes>
-        {/* 🌐 PATH 1: ROOT LANDING PAGE VIEW (Dynamic Session State passed to Navbar) */}
+        {/*  PATH 1: ROOT LANDING PAGE VIEW (Dynamic Session State passed to Navbar) */}
         <Route path="/" element={
           <>
-            {/* ⚡ Passing isAuthenticated allows the marketing Navbar to adapt to logged-in sessions */}
+            {/*  Passing isAuthenticated allows the marketing Navbar to adapt to logged-in sessions */}
             <Navbar isAuthenticated={isAuthenticated} />
             <Home />
             <Footer />
           </>
         } />
 
-        {/* 🔐 PATH 2: AUTHENTICATION PORTAL */}
+        {/* PATH 2: AUTHENTICATION PORTAL */}
         <Route path="/auth" element={
           isAuthenticated ? <Navigate to="/dashboard" replace /> : (
             <div className="flex-1 flex items-center justify-center">
@@ -58,7 +58,7 @@ export default function App() {
           )
         } />
 
-        {/* 🏛️ PATH 3: CORE ACCESSIBLE DASHBOARD CONTROL INTERFACE WORKSPACE */}
+        {/*  PATH 3: CORE ACCESSIBLE DASHBOARD CONTROL INTERFACE WORKSPACE */}
         <Route path="/dashboard" element={
           isAuthenticated ? (
             <Dashboard onLogout={() => setIsAuthenticated(false)} />
@@ -67,7 +67,7 @@ export default function App() {
           )
         } />
 
-        {/* 🗺️ PATH 4: FALLBACK PROTECTION ENGINE */}
+        {/* PATH 4: FALLBACK PROTECTION ENGINE */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/"} replace />} />
       </Routes>
 
