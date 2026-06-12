@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -14,10 +15,10 @@ app.use(express.json());
 // Establish Cloud Atlas Connection Streams
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("Database connected smoothly to MongoDB Atlas! 🍃"))
+  .then(() => console.log("Database connected smoothly to MongoDB Atlas! "))
   .catch((err) => console.error("Database connection failure:", err));
 
-// Route Mounting Pipelines
+
 app.use("/api/auth", require("./routes/auth"));
 
 app.get("/", (req, res) => {
@@ -34,6 +35,4 @@ app.listen(PORT, () => {
 // ... existing server code setup parameters
 app.use("/api/auth", require("./routes/auth"));
 
-// 🔥 NEW PIPELINE ROUTE: Mounts your history updater maps directly to port routers
 app.use("/api/dictionary", require("./routes/dictionary"));
-// ... balance of listener server setup blocks remains unchanged
