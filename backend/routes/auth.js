@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // ==========================================
-// 🚀 ENDPOINT 1: USER SIGNUP (With Code Generation)
+// 🚀 ENDPOINT 1: USER SIGNUP (With Safe Email Sequence)
 // ==========================================
 router.post("/signup", async (req, res) => {
     try {
@@ -25,6 +25,7 @@ router.post("/signup", async (req, res) => {
             return res.status(400).json({ msg: "Please fill out all input fields." });
         }
 
+        // 1. Query the actual database collection
         const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ msg: "An account with this email already exists." });
@@ -42,12 +43,11 @@ router.post("/signup", async (req, res) => {
             email,
             password: hashedPassword,
             verificationCode,
-            verificationCodeExpires: codeExpiry
+            verificationCodeExpires: codeExpiry,
+            isVerified: false // Ensure it explicitly defaults to false
         });
 
-        await newUser.save();
-
-        // Send Email Configuration Layout
+        // 2. Prepare the Email Configuration Layout
         const mailOptions = {
             from: `"ShuriAI" <${process.env.EMAIL_USER}>`,
             to: email,
@@ -64,17 +64,30 @@ router.post("/signup", async (req, res) => {
             `,
         };
 
-        await transporter.sendMail(mailOptions);
-        res.status(201).json({ msg: "CHECK YOUR EMAIL FOR VERIFICATION CODE! ✉️" });
+        // 3. Isolated Email Handshake (Send email BEFORE saving)
+        try {
+            await transporter.sendMail(mailOptions);
+            console.log(`Verification code successfully routed to: ${email}`);
+        } catch (emailError) {
+            console.error("Nodemailer Service Failure Error:", emailError);
+            return res.status(500).json({ 
+                msg: "Failed to send verification email. Please verify your backend SMTP configurations." 
+            });
+        }
+
+        // 4. Save to MongoDB Atlas ONLY if the email step succeeded completely!
+        await newUser.save();
+        
+        return res.status(201).json({ msg: "CHECK YOUR EMAIL FOR VERIFICATION CODE! ✉️" });
         
     } catch (error) {
         console.error("Signup Route Error:", error);
-        res.status(500).json({ msg: "Internal Error during signup." });
+        return res.status(500).json({ msg: "Internal Error during signup." });
     }
 });
 
 // ==========================================
-// 🛡️ NEW ENDPOINT: VERIFY CODE
+// 🛡️ ENDPOINT 2: VERIFY CODE
 // ==========================================
 router.post("/verify-code", async (req, res) => {
     try {
@@ -104,11 +117,11 @@ router.post("/verify-code", async (req, res) => {
         user.verificationCodeExpires = undefined;
         await user.save();
 
-        res.json({ msg: "Account verified successfully! 🎉 You can now sign in." });
+        return res.json({ msg: "Account verified successfully! 🎉 You can now sign in." });
 
     } catch (error) {
         console.error("Verification Error:", error);
-        res.status(500).json({ msg: "Server error during verification process." });
+        return res.status(500).json({ msg: "Server error during verification process." });
     }
 });
 
@@ -142,7 +155,7 @@ router.post("/login", async (req, res) => {
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-        res.json({
+        return res.json({
             token,
             user: {
                 id: user._id,
@@ -154,7 +167,7 @@ router.post("/login", async (req, res) => {
 
     } catch (error) {
         console.error("Login Route Error:", error);
-        res.status(500).json({ msg: "Internal server error." });
+        return res.status(500).json({ msg: "Internal server error." });
     }
 });
 
