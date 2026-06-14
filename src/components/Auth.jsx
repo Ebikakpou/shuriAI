@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Mail, Lock, User, ArrowRight, ShieldCheck, AlertCircle, CheckCircle2 } from "lucide-react";
 
+const API_URL = "https://shuriai-backend.onrender.com";
+
 export default function Auth() {
   // 🧭 Core Screen State Trackers
   const [isLogin, setIsLogin] = useState(true);
@@ -33,7 +35,7 @@ export default function Auth() {
     triggerNotification("", ""); // Clear out old notifications instantly
 
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/${isLogin ? "login" : "signup"}`, {
+      const response = await fetch (`https://shuriai-backend.onrender.com/api/auth/${isLogin ? "login" : "signup"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData), 
@@ -79,7 +81,7 @@ export default function Auth() {
     triggerNotification("", "");
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/verify-code", {
+      const response = await fetch("https://shuriai-backend.onrender.com/api/auth/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email, code: verificationCode }),
