@@ -1,4 +1,3 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -12,14 +11,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Establish Cloud Atlas Connection Streams
+// Establish Cloud Atlas Connection Streams with robust timeout options
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 5000, // End cycle if no response in 5 seconds
+    socketTimeoutMS: 45000,         // Close sockets after 45 seconds
+  })
   .then(() => console.log("Database connected smoothly to MongoDB Atlas! "))
   .catch((err) => console.error("Database connection failure:", err));
 
-
+// All Route Assignments (Clean and unified before app.listen)
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/dictionary", require("./routes/dictionary"));
 
 app.get("/", (req, res) => {
   res.send("ShuriAI Backend Server is Running Smoothly! 🚀");
@@ -31,8 +34,3 @@ app.listen(PORT, () => {
   console.log(`  ShuriAI Server listening on Port: ${PORT}  `);
   console.log(`============================================\n`);
 });
-
-// ... existing server code setup parameters
-app.use("/api/auth", require("./routes/auth"));
-
-app.use("/api/dictionary", require("./routes/dictionary"));
