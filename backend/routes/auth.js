@@ -7,23 +7,20 @@ const User = require("../models/User");
 
 // 📧 Configure Nodemailer Email Transporter
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000,
 });
 
 transporter.verify((error, success) => {
     if (error) {
-        console.error("SMTP Verify Error:", error);
+        console.error("Brevo SMTP Error:", error);
     } else {
-        console.log("SMTP server is ready");
+        console.log("Brevo SMTP Ready!");
     }
 });
 
